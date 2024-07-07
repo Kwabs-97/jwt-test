@@ -76,7 +76,7 @@ function LoginForm() {
       </main>
       <footer>
         <p>
-          Don't have an account? <Link href="/signup">sign up</Link>
+          New here? <Link href="/signup">click here to create an account</Link>
         </p>
       </footer>
     </div>

@@ -27,7 +27,7 @@ function SignupForm() {
           <aside className="flex flex-col gap-4">
             <Button className="hover:bg-gray-3 w-full hover:bg-gray-100">
               <FcGoogle />
-              <p>Sign in with Google</p>
+              <p>Sign up with Google</p>
             </Button>
             <div
               id="separator"
@@ -49,7 +49,12 @@ function SignupForm() {
           <InputContainer className="gap-2">
             <Label>Password*</Label>
             <Input
-              placeholder="Enter your password"
+              placeholder="create a password"
+              type={showPassword ? "text" : "password"}
+            />
+            <Label>Confirm Password*</Label>
+            <Input
+              placeholder="confirm password"
               type={showPassword ? "text" : "password"}
             />
             <div className="flex flex-row gap-2">
@@ -70,13 +75,14 @@ function SignupForm() {
             <p className="text-sm">Must be at least 8 characters</p>
           </InputContainer>
           <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
-            Sign in
+            create account
           </Button>
         </form>
       </main>
       <footer>
         <p>
-          Don't have an account? <Link href="/signup">sign up</Link>
+          Already got an account?{" "}
+          <Link href="/login"> click here to login</Link>
         </p>
       </footer>
     </div>
