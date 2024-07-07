@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx}",
+    "./src/**/*.{js,jsx}",
   ],
   prefix: "",
   theme: {
@@ -19,6 +19,7 @@ module.exports = {
     extend: {
       colors: {
         border: "hsl(var(--border))",
+        burgendy: "#800020",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -72,6 +73,9 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    flexGrow: {
+      2: "2",
+    },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

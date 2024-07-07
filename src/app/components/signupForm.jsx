@@ -9,7 +9,7 @@ import Label from "./label";
 import { useState } from "react";
 import Link from "next/link";
 
-function LoginForm() {
+function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   function _showPassword() {
     setShowPassword(!showPassword);
@@ -20,7 +20,7 @@ function LoginForm() {
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
       <header className="">
         <p>Welcome Stephanie Kumordzie</p>
-        <p>Please sign in to continue</p>
+        <p>Please sign up to continue</p>
       </header>
       <main className="w-9/12">
         <form action="" className="flex flex-col gap-4">
@@ -83,4 +83,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default SignupForm;
