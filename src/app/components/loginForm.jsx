@@ -22,8 +22,8 @@ function LoginForm() {
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  function _handleSubmit(data) {
-    console.log(data);
+  function onSubmit(data) {
+    console.log("form Data :", data);
   }
 
   return (
@@ -36,7 +36,7 @@ function LoginForm() {
         <form
           action=""
           className="flex flex-col gap-4"
-          onSubmit={handleSubmit(_handleSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <aside className="flex flex-col gap-4">
             <Button className="hover:bg-gray-3 w-full hover:bg-gray-100">
@@ -122,7 +122,6 @@ function LoginForm() {
                 Show password
               </label>
             </div>
-            <p className="text-sm">Must be at least 8 characters</p>
           </InputContainer>
           <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
             Sign in
