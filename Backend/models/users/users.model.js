@@ -21,10 +21,10 @@ VALUES($1,$2,$3,$4) RETURNING *
   }
 }
 
-export async function _findUserByEmail(email) {
-  const findUserQuery = `SELECT * FROM users WHERE email = $1 RETURNING *`;
+export async function _getUserByEmail(email) {
+  const getUserQuery = `SELECT * FROM users WHERE email = $1 RETURNING *`;
   try {
-    const result = client.query(findUserQuery, [email]);
+    const result = client.query(getUserQuery, [email]);
     return result.rows[0];
   } catch (error) {
     console.log("error finding user with this email", error);

@@ -1,6 +1,7 @@
 import express from "express";
 import { client } from "./config/postgresDB.js";
 import bodyParser from "body-parser";
+import router from "./routes/auth.route.js";
 
 const app = express();
 const port = process.env.PORT;
@@ -8,6 +9,8 @@ const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json());
+
+app.use(router);
 
 try {
   await client.connect();
