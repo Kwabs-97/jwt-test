@@ -8,6 +8,8 @@ import InputContainer from "./inputContainer";
 import Label from "./label";
 import { useState } from "react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "./errorMessage";
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,7 +17,15 @@ function LoginForm() {
     setShowPassword(!showPassword);
   }
 
-  console.log(showPassword);
+  const form = useForm();
+
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
+
+  function onSubmit(data) {
+    console.log("form Data :", data);
+  }
+
   return (
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
       <header className="">
@@ -23,7 +33,11 @@ function LoginForm() {
         <p>Please sign in to continue</p>
       </header>
       <main className="w-9/12">
-        <form action="" className="flex flex-col gap-4">
+        <form
+          action=""
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <aside className="flex flex-col gap-4">
             <Button className="hover:bg-gray-3 w-full hover:bg-gray-100">
               <FcGoogle />
@@ -37,29 +51,71 @@ function LoginForm() {
               <Separator className="w-48" />
             </div>
           </aside>
-          <InputContainer>
+          {/* <InputContainer className="flex-col gap-1">
             <Label>Username*</Label>
-            <Input placeholder="Enter your username" />
-          </InputContainer>
+            <Input
+              placeholder="Enter your username"
+              name="username"
+              validation={{
+                required: {
+                  value: true,
+                  message: "Username is required",
+                },
+              }}
+              register={register}
+            />
+            {errors.username && (
+              <ErrorMessage>{errors.username.message}</ErrorMessage>
+            )}
+          </InputContainer> */}
 
-          <InputContainer>
+          <InputContainer className="flex-col gap-1">
             <Label>Email*</Label>
-            <Input placeholder="Enter your email" />
+            <Input
+              placeholder="Enter your email"
+              name="email"
+              validation={{
+                required: {
+                  value: true,
+                  message: "Email field cannot be empty",
+                },
+                pattern: {
+                  value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  message: "Please enter a valid email",
+                },
+              }}
+              register={register}
+            />
+            {errors.email && (
+              <ErrorMessage>{errors.email.message}</ErrorMessage>
+            )}
           </InputContainer>
-          <InputContainer className="gap-2">
+          <InputContainer className="flex-col gap-1">
             <Label>Password*</Label>
             <Input
               placeholder="Enter your password"
               type={showPassword ? "text" : "password"}
+              name="password"
+              validation={{
+                required: {
+                  value: true,
+                  message: "Password field cannot be empty",
+                },
+              }}
+              register={register}
             />
+            {errors.password && (
+              <ErrorMessage>{errors.password.message}</ErrorMessage>
+            )}
             <div className="flex flex-row gap-2">
               <input
                 type="checkbox"
-                className="px-4 py-2"
-                name="show_password_checkbox"
+                className=""
+                name="password"
                 id="show_password_checkbox"
                 onClick={_showPassword}
               />
+
               <label
                 htmlFor="show_password_checkbox"
                 className="text-sm font-normal"
@@ -67,7 +123,6 @@ function LoginForm() {
                 Show password
               </label>
             </div>
-            <p className="text-sm">Must be at least 8 characters</p>
           </InputContainer>
           <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
             Sign in

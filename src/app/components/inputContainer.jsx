@@ -4,10 +4,7 @@ import classNames from "classnames";
 function InputContainer({ children, className }) {
   return (
     <div
-      className={classNames(
-        "flex w-full flex-col items-start justify-start gap-1",
-        className,
-      )}
+      className={classNames("flex w-full items-start justify-start", className)}
     >
       {children}
     </div>
