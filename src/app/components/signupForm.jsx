@@ -15,8 +15,6 @@ function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm();
 
-  console.log(process.env);
-
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
