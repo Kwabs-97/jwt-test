@@ -1,9 +1,15 @@
 import express from "express";
-import dotenv from "dotenv";
+import { client } from "./config/postgresDB.js";
 
-dotenv.config();
-const port = process.env.PORT;
 const app = express();
-app.listen(port, () => {
+const port = process.env.PORT;
+try {
+  await client.connect();
+  console.log("connected to db successfully");
+} catch (error) {
+  console.log(error);
+}
+
+app.listen(port, async () => {
   console.log(`server is listening on ${port}`);
 });
