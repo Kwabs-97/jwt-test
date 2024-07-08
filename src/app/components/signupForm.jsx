@@ -15,8 +15,6 @@ function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm();
 
-  console.log(process.env);
-
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
@@ -121,10 +119,10 @@ function SignupForm() {
                   value: true,
                   message: "Password is required",
                 },
-                pattern: {
-                  value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-                  message: "Please enter a stronger password",
-                },
+                // pattern: {
+                //   value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                //   message: "Please enter a stronger password",
+                // },
               }}
               register={register}
             />
