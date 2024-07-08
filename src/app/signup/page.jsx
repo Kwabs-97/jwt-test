@@ -16,7 +16,7 @@ function page() {
           alt="steph"
           width="600"
           height="500"
-          className="grow-2 w-max rounded-lg"
+          className="w-max grow-2 rounded-lg"
           quality={100}
           priority={false}
         />

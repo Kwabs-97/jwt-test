@@ -21,8 +21,8 @@ function SignupForm() {
 
   async function onSubmit(data) {
     const formData = {
-      firstName: data.firstname, // Assuming data object has these properties
-      lastName: data.lastname,
+      firstname: data.firstname, // Assuming data object has these properties
+      lastname: data.lastname,
       email: data.email,
       password: data.password,
     };
