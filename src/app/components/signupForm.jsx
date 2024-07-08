@@ -11,9 +11,16 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
 import { registerUser } from "@/lib/api/http";
+import { useToast } from "@/components/ui/use-toast";
 
 function SignupForm() {
+  //show or hide password state
   const [showPassword, setShowPassword] = useState(false);
+  function _showPassword() {
+    setShowPassword(!showPassword);
+  }
+
+  //handle form state
   const form = useForm();
 
   const { register, handleSubmit, formState } = form;
@@ -27,6 +34,7 @@ function SignupForm() {
       password: data.password,
     };
 
+    //handle api call
     try {
       const response = await registerUser(formData);
       console.log(response);
@@ -34,9 +42,9 @@ function SignupForm() {
       console.log(error);
     }
   }
-  function _showPassword() {
-    setShowPassword(!showPassword);
-  }
+
+  //handle show toast
+  const { toast } = useToast();
 
   return (
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
@@ -162,7 +170,14 @@ function SignupForm() {
               <p className="text-sm">Must be at least 8 characters</p>
             </div>
           </InputContainer>
-          <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
+          <Button
+            className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900"
+            onClick={() => {
+              toast({
+                description: "user has been created successfully",
+              });
+            }}
+          >
             create account
           </Button>
         </form>
