@@ -51,7 +51,7 @@ function LoginForm() {
               <Separator className="w-48" />
             </div>
           </aside>
-          <InputContainer>
+          {/* <InputContainer className="flex-col gap-1">
             <Label>Username*</Label>
             <Input
               placeholder="Enter your username"
@@ -67,9 +67,9 @@ function LoginForm() {
             {errors.username && (
               <ErrorMessage>{errors.username.message}</ErrorMessage>
             )}
-          </InputContainer>
+          </InputContainer> */}
 
-          <InputContainer>
+          <InputContainer className="flex-col gap-1">
             <Label>Email*</Label>
             <Input
               placeholder="Enter your email"
@@ -90,7 +90,7 @@ function LoginForm() {
               <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
           </InputContainer>
-          <InputContainer className="gap-2">
+          <InputContainer className="flex-col gap-1">
             <Label>Password*</Label>
             <Input
               placeholder="Enter your password"
@@ -110,11 +110,12 @@ function LoginForm() {
             <div className="flex flex-row gap-2">
               <input
                 type="checkbox"
-                className="px-4 py-2"
+                className=""
                 name="password"
                 id="show_password_checkbox"
                 onClick={_showPassword}
               />
+
               <label
                 htmlFor="show_password_checkbox"
                 className="text-sm font-normal"

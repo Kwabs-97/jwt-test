@@ -15,7 +15,7 @@ function Input({
       type={type}
       value={value}
       id={id}
-      className={`${className} focus:border-burgendy w-full rounded-lg border border-solid border-gray-300 px-4 py-2 text-rose-950 focus:border-[2px] focus:outline-none`}
+      className={`${className} w-full rounded-lg border border-solid border-gray-300 px-4 py-2 text-sm text-rose-950 focus:border-[2px] focus:border-burgendy focus:outline-none`}
       placeholder={placeholder}
       name={name}
       validation={validation}

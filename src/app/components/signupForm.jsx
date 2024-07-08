@@ -50,25 +50,44 @@ function SignupForm() {
               <Separator className="w-48" />
             </div>
           </aside>
-          <InputContainer>
-            <Label>Username*</Label>
-            <Input
-              placeholder="Enter your username"
-              name="username"
-              validation={{
-                required: {
-                  value: true,
-                  message: "Username is required",
-                },
-              }}
-              register={register}
-            />
-            {errors.username && (
-              <ErrorMessage>{errors.username.message}</ErrorMessage>
-            )}
+          <InputContainer className="gap-3">
+            <div>
+              <Label>First name*</Label>
+              <Input
+                placeholder="Enter your first name"
+                name="firstname"
+                validation={{
+                  required: {
+                    value: true,
+                    message: "First name is required",
+                  },
+                }}
+                register={register}
+              />
+              {errors.firstname && (
+                <ErrorMessage>{errors.firstname.message}</ErrorMessage>
+              )}
+            </div>
+            <div>
+              <Label>Lastname*</Label>
+              <Input
+                placeholder="Enter your last name"
+                name="lastname"
+                validation={{
+                  required: {
+                    value: true,
+                    message: "Last name is required",
+                  },
+                }}
+                register={register}
+              />
+              {errors.lastname && (
+                <ErrorMessage>{errors.lastname.message}</ErrorMessage>
+              )}
+            </div>
           </InputContainer>
 
-          <InputContainer>
+          <InputContainer className="flex-col gap-1">
             <Label>Email*</Label>
             <Input
               placeholder="Enter your email"
@@ -89,7 +108,7 @@ function SignupForm() {
               <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
           </InputContainer>
-          <InputContainer className="gap-2">
+          <InputContainer className="flex-col gap-1">
             <Label>Password*</Label>
             <Input
               placeholder="create a password"
