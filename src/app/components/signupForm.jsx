@@ -10,6 +10,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
+import { registerUser } from "@/lib/api/http";
 
 function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,8 +19,20 @@ function SignupForm() {
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    const formData = {
+      firstName: data.firstname, // Assuming data object has these properties
+      lastName: data.lastname,
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+      const response = await registerUser(formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
   function _showPassword() {
     setShowPassword(!showPassword);
