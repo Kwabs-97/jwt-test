@@ -48,6 +48,9 @@ function SignupForm() {
       if (submitData.status === 200) {
         setSignupSuccess(true);
         setSuccessMessage(submitData.data.message);
+        // setTimeout(()=>{
+
+        // },3000)
       } else {
         setSignupSuccess(false);
         setErrorMessage(submitData.response.data.message);
