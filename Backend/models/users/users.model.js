@@ -25,6 +25,7 @@ export async function _getUserByEmail(email) {
   const getUserQuery = `SELECT * FROM users WHERE email = $1 `;
   try {
     const result = await client.query(getUserQuery, [email]);
+    return result.rows[0];
   } catch (error) {
     console.log("error finding user with this email", error);
   }

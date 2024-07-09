@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
 import { registerUser } from "@/lib/api/http";
 import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 function SignupForm() {
   //show or hide password state
@@ -20,11 +21,14 @@ function SignupForm() {
     setShowPassword(!showPassword);
   }
 
+  //error message
+  const [errorMessage, setErrorMessage] = useState("");
+
   //handle form state
   const form = useForm();
 
   const { register, handleSubmit, formState } = form;
-  const { errors } = formState;
+  const { errors, isSubmitting, isSubmitSuccessful } = formState;
 
   async function onSubmit(data) {
     const formData = {
@@ -36,8 +40,11 @@ function SignupForm() {
 
     //handle api call
     try {
-      const response = await registerUser(formData);
-      console.log(response);
+      const submitData = await registerUser(formData);
+      console.log(submitData);
+      if (submitData.status !== 200) {
+        setErrorMessage(submitData.response.data.message);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -166,17 +173,26 @@ function SignupForm() {
                 Show password
               </label>
             </div>
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <div>
               <p className="text-sm">Must be at least 8 characters</p>
             </div>
           </InputContainer>
           <Button
             className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900"
-            onClick={() => {
-              toast({
-                description: "user has been created successfully",
-              });
-            }}
+            // onClick={() => {
+            //   toast({
+            //     variant: successMessage ? "" : "destructive",
+            //     title: successMessage
+            //       ? "congratulations"
+            //       : "uh oh, failed to register user",
+            //     description: successMessage ? successMessage : errorMessage,
+            //     action: (
+            //       <ToastAction altText="Try again">Try again</ToastAction>
+            //     ),
+            //   });
+            // }}
+            disabled={true}
           >
             create account
           </Button>

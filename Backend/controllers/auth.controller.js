@@ -11,19 +11,20 @@ export async function registerController(req, res) {
       return res
         .status(400)
         .json({ message: "User with this email already exist" });
+    } else {
+      const saltRounds = 10;
+      const hashed_password = bcrypt.hash(password, saltRounds);
+      const newUser = await _createNewUser(
+        firstname,
+        lastname,
+        email,
+        hashed_password,
+      );
+      res.status(200).json({
+        message: "user registration successful",
+        data: { firstname, lastname, email },
+      });
     }
-    const saltRounds = 10;
-    const hashed_password = bcrypt.hash(password, saltRounds);
-    const newUser = await _createNewUser(
-      firstname,
-      lastname,
-      email,
-      hashed_password,
-    );
-    res.status(200).json({
-      message: "user registration successful",
-      data: { firstname, lastname, email },
-    });
   } catch (error) {
     res
       .status(500)
