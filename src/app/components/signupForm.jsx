@@ -1,18 +1,19 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./button";
 import { FcGoogle } from "react-icons/fc";
 import { Separator } from "@/components/ui/separator";
 import Input from "./input";
 import InputContainer from "./inputContainer";
 import Label from "./label";
-import { useState } from "react";
 import Link from "next/link";
+
+import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
 import { registerUser } from "@/lib/api/http";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 function SignupForm() {
   //show or hide password state
@@ -23,12 +24,14 @@ function SignupForm() {
 
   //error message
   const [errorMessage, setErrorMessage] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   //handle form state
   const form = useForm();
 
   const { register, handleSubmit, formState } = form;
-  const { errors, isSubmitting, isSubmitSuccessful } = formState;
+  const { errors, isSubmitting } = formState;
 
   async function onSubmit(data) {
     const formData = {
@@ -42,16 +45,30 @@ function SignupForm() {
     try {
       const submitData = await registerUser(formData);
       console.log(submitData);
-      if (submitData.status !== 200) {
+      if (submitData.status === 200) {
+        setSignupSuccess(true);
+        setSuccessMessage(submitData.data.message);
+      } else {
+        setSignupSuccess(false);
         setErrorMessage(submitData.response.data.message);
       }
     } catch (error) {
+      setSignupSuccess(false);
+      setErrorMessage("An error occurred during registration.");
       console.log(error);
     }
   }
 
-  //handle show toast
+  //show toast on successful registration
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (signupSuccess) {
+      toast({
+        description: successMessage,
+      });
+    }
+  }, [signupSuccess, successMessage, toast]);
 
   return (
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
@@ -179,22 +196,14 @@ function SignupForm() {
             </div>
           </InputContainer>
           <Button
-            className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900"
-            // onClick={() => {
-            //   toast({
-            //     variant: successMessage ? "" : "destructive",
-            //     title: successMessage
-            //       ? "congratulations"
-            //       : "uh oh, failed to register user",
-            //     description: successMessage ? successMessage : errorMessage,
-            //     action: (
-            //       <ToastAction altText="Try again">Try again</ToastAction>
-            //     ),
-            //   });
-            // }}
-            disabled={true}
+            className={`bg-burgendy font-bold leading-6 text-white hover:bg-rose-900`}
+            disabled={isSubmitting}
           >
-            create account
+            {isSubmitting ? (
+              <LoadingSpinner className="h-5 w-5 text-white" />
+            ) : (
+              "create account"
+            )}
           </Button>
         </form>
       </main>
