@@ -48,9 +48,8 @@ function LoginForm() {
       if (logUserIn.status === 200) {
         setloginSuccess(true);
         setSuccessMessage(logUserIn.data.message);
-        setTimeout(() => {
-          router.push("/home");
-        }, 2000);
+
+        router.push("/home");
       }
       console.log(logUserIn);
     } catch (error) {
