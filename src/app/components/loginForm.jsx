@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
 import { userLogin } from "@/lib/api/http";
 import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +31,8 @@ function LoginForm() {
   const [loginSuccess, setloginSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  //router to navigate programatically on successful login
+  const router = useRouter();
   async function onSubmit(data) {
     console.log("form Data :", data);
 
@@ -45,6 +48,9 @@ function LoginForm() {
       if (logUserIn.status === 200) {
         setloginSuccess(true);
         setSuccessMessage(logUserIn.data.message);
+        setTimeout(() => {
+          router.push("/home");
+        }, 2000);
       }
       console.log(logUserIn);
     } catch (error) {
