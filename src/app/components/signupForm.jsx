@@ -1,23 +1,37 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./button";
 import { FcGoogle } from "react-icons/fc";
 import { Separator } from "@/components/ui/separator";
 import Input from "./input";
 import InputContainer from "./inputContainer";
 import Label from "./label";
-import { useState } from "react";
 import Link from "next/link";
+
+import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
 import { registerUser } from "@/lib/api/http";
 
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+
 function SignupForm() {
+  //show or hide password state
   const [showPassword, setShowPassword] = useState(false);
+  function _showPassword() {
+    setShowPassword(!showPassword);
+  }
+
+  //error message
+  const [errorMessage, setErrorMessage] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  //handle form state
   const form = useForm();
 
   const { register, handleSubmit, formState } = form;
-  const { errors } = formState;
+  const { errors, isSubmitting } = formState;
 
   async function onSubmit(data) {
     const formData = {
@@ -27,16 +41,37 @@ function SignupForm() {
       password: data.password,
     };
 
+    //handle api call
     try {
-      const response = await registerUser(formData);
-      console.log(response);
+      const submitData = await registerUser(formData);
+      console.log(submitData);
+      if (submitData.status === 200) {
+        setSignupSuccess(true);
+        setSuccessMessage(submitData.data.message);
+        // setTimeout(()=>{
+
+        // },3000)
+      } else {
+        setSignupSuccess(false);
+        setErrorMessage(submitData.response.data.message);
+      }
     } catch (error) {
+      setSignupSuccess(false);
+      setErrorMessage("An error occurred during registration.");
       console.log(error);
     }
   }
-  function _showPassword() {
-    setShowPassword(!showPassword);
-  }
+
+  //show toast on successful registration
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (signupSuccess) {
+      toast({
+        description: successMessage,
+      });
+    }
+  }, [signupSuccess, successMessage, toast]);
 
   return (
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
@@ -158,12 +193,20 @@ function SignupForm() {
                 Show password
               </label>
             </div>
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <div>
               <p className="text-sm">Must be at least 8 characters</p>
             </div>
           </InputContainer>
-          <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
-            create account
+          <Button
+            className={`bg-burgendy font-bold leading-6 text-white hover:bg-rose-900`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <LoadingSpinner className="h-5 w-5 text-white" />
+            ) : (
+              "create account"
+            )}
           </Button>
         </form>
       </main>
