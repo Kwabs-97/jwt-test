@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "./button";
 import { FcGoogle } from "react-icons/fc";
 import { Separator } from "@/components/ui/separator";
@@ -10,6 +10,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./errorMessage";
+import { userLogin } from "@/lib/api/http";
+import { useToast } from "@/components/ui/use-toast";
 
 function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,9 +24,45 @@ function LoginForm() {
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
 
-  function onSubmit(data) {
+  //states for server messages
+  const [serverError, setServerError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loginSuccess, setloginSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  async function onSubmit(data) {
     console.log("form Data :", data);
+
+    //get form data
+    const loginData = {
+      email: data.email,
+      password: data.password,
+    };
+
+    //login handler
+    try {
+      const logUserIn = await userLogin(loginData);
+      if (logUserIn.status === 200) {
+        setloginSuccess(true);
+        setSuccessMessage(logUserIn.data.message);
+      }
+      console.log(logUserIn);
+    } catch (error) {
+      setServerError(true);
+      setErrorMessage(error.response.data.message);
+      console.log(error);
+    }
   }
+
+  //show toast on successful login
+  const { toast } = useToast();
+  useEffect(() => {
+    if (loginSuccess) {
+      toast({
+        description: successMessage,
+      });
+    }
+  }, [loginSuccess, successMessage, toast]);
 
   return (
     <div className="form-container flex w-full flex-col items-center justify-center gap-4">
@@ -124,6 +162,7 @@ function LoginForm() {
               </label>
             </div>
           </InputContainer>
+          {serverError && <ErrorMessage>{errorMessage}</ErrorMessage>}
           <Button className="bg-burgendy font-bold leading-6 text-white hover:bg-rose-900">
             Sign in
           </Button>

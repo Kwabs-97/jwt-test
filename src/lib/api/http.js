@@ -10,10 +10,11 @@ export async function registerUser(data) {
 }
 export async function userLogin(data) {
   try {
-    const response = await axios.post("http://localhost:8080/register", data);
+    const response = await axios.post("http://localhost:8080/login", data);
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
-    return error;
+    throw error;
   }
 }
