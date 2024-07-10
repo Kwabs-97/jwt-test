@@ -4,12 +4,7 @@ import { CircleUser } from "lucide-react";
 import NotebookTabIcon from "../assets/icons/notebook-icon";
 
 function page() {
-  return (
-    <div>
-      <CircleUserIcon />
-      <NotebookTabIcon />
-    </div>
-  );
+  return <div></div>;
 }
 
 export default page;

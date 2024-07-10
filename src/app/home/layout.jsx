@@ -1,7 +1,13 @@
 import React from "react";
+import Sidebar from "./components/sidebar";
 
-function Layout({ children }) {
-  return <div>{children}</div>;
+function DashboardLayout({ children }) {
+  return (
+    <section>
+      <Sidebar />
+      {children}
+    </section>
+  );
 }
 
-export default Layout;
+export default DashboardLayout;
