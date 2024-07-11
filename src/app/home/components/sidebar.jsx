@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import logo from "@/app/assets/images/13af781b-e4aa-4802-9a12-db271d456201.jpg";
@@ -7,8 +8,19 @@ import HomeIcon from "@/app/assets/icons/homeIcon";
 import NotebookTabIcon from "@/app/assets/icons/notebook-icon";
 import SettingsIcon from "@/app/assets/icons/settingsIcon";
 import EllipsisIcon from "@/app/assets/icons/ellipsisIcon";
+import { useState, useEffect } from "react";
 
 function Sidebar() {
+  const [userData, setUserData] = useState(null);
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("userData"));
+    console.log(data);
+
+    if (data) {
+      setUserData(data);
+    }
+  }, []);
+
   const navLinks = [
     {
       link: "home",
@@ -48,7 +60,6 @@ function Sidebar() {
                   className="flex flex-row gap-3"
                   key={navLink.link}
                 >
-                  <div className="h-full w-3 rounded-r-md"></div>
                   <NavLinks href={navLink.link}>
                     {navLink.icon} <p>{navLink.link}</p>
                   </NavLinks>
@@ -67,7 +78,11 @@ function Sidebar() {
             className="rounded-[100%]"
           />
 
-          <p className="whitespace-nowrap">Miss Kukuaa French</p>
+          {userData && (
+            <p className="whitespace-nowrap">
+              {userData.firstname} {userData.lastname}
+            </p>
+          )}
           <EllipsisIcon />
         </div>
       </div>
