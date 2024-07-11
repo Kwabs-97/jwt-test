@@ -64,9 +64,10 @@ function Sidebar() {
             alt="profile photo"
             width={20}
             height={20}
-            className="rounded-full"
+            className="rounded-[100%]"
           />
-          <p>Miss Kukuaa French</p>
+
+          <p className="whitespace-nowrap">Miss Kukuaa French</p>
           <EllipsisIcon />
         </div>
       </div>

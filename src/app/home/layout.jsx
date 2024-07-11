@@ -3,7 +3,7 @@ import Sidebar from "./components/sidebar";
 
 function DashboardLayout({ children }) {
   return (
-    <section>
+    <section className="flex flex-row">
       <Sidebar />
       {children}
     </section>
