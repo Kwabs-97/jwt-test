@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import steph from "@/app/assets/images/IMG_5351.PNG";
-import LoginForm from "../components/loginForm";
+import LoginForm from "./components/loginForm";
 
 function page() {
   return (
