@@ -78,9 +78,6 @@ export async function loginController(req, res) {
 
     // Set cookie options
     const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
-      sameSite: "Lax", // Helps prevent CSRF attacks
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     };
 
