@@ -11,6 +11,7 @@ function Page() {
       setUserData(data);
     }
   }, []);
+
   return (
     <div className="mr-5 mt-6 flex w-full flex-col gap-2">
       <Header userData={userData} />
