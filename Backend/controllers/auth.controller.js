@@ -6,7 +6,7 @@ import {
 import jwt from "jsonwebtoken";
 export async function registerController(req, res) {
   const { firstname, lastname, email, password } = req.body;
-  console.log("registration details", email, " ", password);
+
   try {
     const existingUser = await _getUserByEmail(email);
     if (existingUser) {
@@ -16,7 +16,7 @@ export async function registerController(req, res) {
     } else {
       const saltRounds = 10;
       const hashed_password = await bcrypt.hash(password, saltRounds);
-      console.log("hashed password", hashed_password);
+
       const newUser = await _createNewUser(
         firstname,
         lastname,
@@ -37,50 +37,59 @@ export async function registerController(req, res) {
 
 export async function loginController(req, res) {
   const { email, password } = req.body;
-  console.log("login details", email, " ", password);
+  console.log("login details", email, password);
+
   try {
-    //check if user exist
+    // Check if user exists
     const existingUser = await _getUserByEmail(email);
     console.log(existingUser);
+
     if (!existingUser) {
       return res.status(404).json({
         message: "Account does not exist. Please register to get started",
       });
     }
 
-    //compare passwords for authentication
+    // Compare passwords for authentication
     const isPasswordMatch = await bcrypt.compare(
       password,
       existingUser.hashed_password,
     );
-
     console.log(isPasswordMatch);
+
     if (!isPasswordMatch) {
       return res.status(401).json({
         message: "Incorrect email or password, please try again",
       });
     }
 
-    //create token data
+    // Create token data
     const tokenData = {
-      email,
-      password,
+      email: existingUser.email,
+      userId: existingUser.id, // Include non-sensitive data
     };
 
     console.log(process.env.JWT_SECRET_KEY);
 
-    //generate token using jwt
+    // Generate token using JWT
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1d",
     });
 
-    res.cookies("token", token, {
+    // Set cookie options
+    const cookieOptions = {
       httpOnly: true,
-    });
+      secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
+      sameSite: "Lax", // Helps prevent CSRF attacks
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    };
 
-    //send success response object
+    // Send token as a cookie
+    res.cookie("token", token, cookieOptions);
+
+    // Send success response
     return res.status(200).json({
-      message: "login successful",
+      message: "Login successful",
       userData: {
         firstname: existingUser.firstname,
         lastname: existingUser.lastname,
@@ -89,6 +98,6 @@ export async function loginController(req, res) {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal error", error });
+    return res.status(500).json({ message: "Internal server error", error });
   }
 }
