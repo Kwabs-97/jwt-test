@@ -3,6 +3,7 @@ import {
   _createNewUser,
   _getUserByEmail,
 } from "../models/users/users.model.js";
+import jwt from "jsonwebtoken";
 export async function registerController(req, res) {
   const { firstname, lastname, email, password } = req.body;
   console.log("registration details", email, " ", password);
@@ -59,6 +60,25 @@ export async function loginController(req, res) {
         message: "Incorrect email or password, please try again",
       });
     }
+
+    //create token data
+    const tokenData = {
+      email,
+      password,
+    };
+
+    console.log(process.env.JWT_SECRET_KEY);
+
+    //generate token using jwt
+    const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1d",
+    });
+
+    res.cookies("token", token, {
+      httpOnly: true,
+    });
+
+    //send success response object
     return res.status(200).json({
       message: "login successful",
       userData: {
