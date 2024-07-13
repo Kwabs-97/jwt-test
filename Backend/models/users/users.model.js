@@ -13,7 +13,6 @@ VALUES($1,$2,$3,$4) RETURNING *
       firstname,
       lastname,
       email,
-      hashed_password,
     ]);
     return result.rows[0];
   } catch (error) {

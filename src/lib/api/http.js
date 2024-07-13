@@ -11,6 +11,7 @@ export async function registerUser(data) {
 }
 export async function userLogin(data) {
   try {
+    axios.defaults.withCredentials = true;
     const response = await axios.post("http://localhost:8080/login", data);
     localStorage.setItem("userData", JSON.stringify(response.data.userData));
     console.log(response);

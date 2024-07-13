@@ -7,11 +7,11 @@ import cookieParser from "cookie-parser";
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(router);
 
 try {

@@ -1,8 +1,10 @@
 import bcrypt from "bcrypt";
+
 import {
   _createNewUser,
   _getUserByEmail,
 } from "../models/users/users.model.js";
+
 import jwt from "jsonwebtoken";
 export async function registerController(req, res) {
   const { firstname, lastname, email, password } = req.body;
@@ -23,9 +25,13 @@ export async function registerController(req, res) {
         email,
         hashed_password,
       );
-      res.status(200).json({
+      return res.status(200).json({
         message: "user registration successful",
-        data: { firstname, lastname, email },
+        data: {
+          firstname: newUser.firstname,
+          lastname: newUser.lastname,
+          email: newUser.email,
+        },
       });
     }
   } catch (error) {
@@ -42,7 +48,6 @@ export async function loginController(req, res) {
   try {
     // Check if user exists
     const existingUser = await _getUserByEmail(email);
-    console.log(existingUser);
 
     if (!existingUser) {
       return res.status(404).json({
@@ -55,7 +60,6 @@ export async function loginController(req, res) {
       password,
       existingUser.hashed_password,
     );
-    console.log(isPasswordMatch);
 
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -66,22 +70,20 @@ export async function loginController(req, res) {
     // Create token data
     const tokenData = {
       email: existingUser.email,
-      userId: existingUser.id, // Include non-sensitive data
+      userId: existingUser.id,
     };
-
-    console.log(process.env.JWT_SECRET_KEY);
 
     // Generate token using JWT
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1d",
     });
 
-    // Set cookie options
+    // Send token as a cookie
     const cookieOptions = {
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+      httpOnly: true,
     };
 
-    // Send token as a cookie
     res.cookie("token", token, cookieOptions);
 
     // Send success response
